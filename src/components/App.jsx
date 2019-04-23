@@ -3,6 +3,7 @@ import VideoList from '../../src/components/VideoList.js';
 import VideoPlayer from '../../src/components/VideoPlayer.js';
 import YOUTUBE_API_KEY from '../config/youtube.js';
 import searchYouTube from '../lib/searchYouTube.js';
+import Search from '../../src/components/Search.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,24 +11,39 @@ class App extends React.Component {
 
     this.state = {
       clickedVideo: {
-        video: video[0]
-      }
+        video: {}
+      },
+      allVideos: []
     };
 
     this.onClickVideo = this.onClickVideo.bind(this);
   }
   componentDidMount() {
+    this.getData();
+  }
+
+  getData() {
     var options = {
       query: 'cats',
       max: 5,
       key: YOUTUBE_API_KEY,
     };
-    searchYouTube(options, () => { console.log('hello'); });
+    searchYouTube(options, (data) => {
+      console.log(data.items);
+
+      this.setState({
+        clickedVideo: {
+          video: data.items[0]
+        },
+        allVideos: data.items
+      });
+      console.log(this.state.allVideos);
+    });
+
   }
 
   onClickVideo(data) {
     this.setState({
-      clicked: !this.state.clicked,
       clickedVideo: {
         video: data
       }
@@ -35,11 +51,14 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.state.allVideos.length === 0) {
+      return (<div>Loading... </div>);
+    }
     return (
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <Search searchList={this.state} />
           </div>
         </nav>
         <div className="row">
@@ -47,7 +66,7 @@ class App extends React.Component {
             <VideoPlayer video={this.state.clickedVideo.video} />
           </div>
           <div className="col-md-5">
-            <VideoList clickEvent={this.onClickVideo} videos={video} />
+            <VideoList clickEvent={this.onClickVideo} videos={this.state.allVideos} />
           </div>
         </div>
       </div>
