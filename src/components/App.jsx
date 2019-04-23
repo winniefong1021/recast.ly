@@ -23,10 +23,17 @@ import VideoPlayer from '../../src/components/VideoPlayer.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
-
+    //keep track of all videos and current video in player
     this.state = {
-
+      allVideos: {},
+      currentVideo: null
     };
+
+    this.onClickVideo = this.onClickVideo.bind(this);
+  }
+  //when title of videoListEntry is clicked play that video in videoplayer
+  onClickVideo() {
+    // this.setState changes currentVideo key to clicked video from videoListEntry
   }
 
   render() {
