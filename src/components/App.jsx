@@ -17,6 +17,7 @@ class App extends React.Component {
 
     this.onClickVideo = this.onClickVideo.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleInput = this.handleInput.bind(this);
   }
   componentDidMount() {
     this.getData();
@@ -29,7 +30,6 @@ class App extends React.Component {
       key: YOUTUBE_API_KEY,
     };
     this.props.searchYouTube(options, (data) => {
-      console.log('App: ', data);
 
       this.setState({
         clickedVideo: {
@@ -41,11 +41,10 @@ class App extends React.Component {
 
   }
 
-  handleSearch(data) {
-    console.log(this.props.searchYouTube);
-    console.log(data);
+  handleSearch() {
+
     var input = $('.form-control').val();
-    console.log(input);
+
     var options = {
       query: input,
       max: 5,
@@ -53,7 +52,7 @@ class App extends React.Component {
     };
 
     this.props.searchYouTube(options, (data) => {
-      console.log('Search: ', data);
+
       this.setState({
         clickedVideo: {
           video: data[0]
@@ -63,6 +62,30 @@ class App extends React.Component {
     });
 
   }
+
+  handleInput(event) {
+
+    var input = event;
+
+    var options = {
+      query: input,
+      max: 5,
+      key: YOUTUBE_API_KEY,
+    };
+
+    this.props.searchYouTube(options, (data) => {
+
+      this.setState({
+        clickedVideo: {
+          video: data[0]
+        },
+        allVideos: data
+      });
+    });
+
+  }
+
+
 
   onClickVideo(data) {
     this.setState({
@@ -77,7 +100,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search searchEvent={this.handleSearch} />
+            <Search searchEvent={this.handleSearch} inputEvent={this.handleInput} />
           </div>
         </nav>
         <div className="row">
