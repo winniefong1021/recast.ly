@@ -1,24 +1,8 @@
 import video from '../data/exampleVideoData.js';
 import VideoList from '../../src/components/VideoList.js';
 import VideoPlayer from '../../src/components/VideoPlayer.js';
-
-// var App = () => (
-//   <div>
-//     <nav className="navbar">
-//       <div className="col-md-6 offset-md-3">
-//         <div><h5><em>search</em> view goes here</h5></div>
-//       </div>
-//     </nav>
-//     <div className="row">
-//       <div className="col-md-7">
-//         <VideoPlayer video={video} />
-//       </div>
-//       <div className="col-md-5">
-//         <VideoList videos={video} />
-//       </div>
-//     </div>
-//   </div>
-// );
+import YOUTUBE_API_KEY from '../config/youtube.js';
+import searchYouTube from '../lib/searchYouTube.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -31,6 +15,14 @@ class App extends React.Component {
     };
 
     this.onClickVideo = this.onClickVideo.bind(this);
+  }
+  componentDidMount() {
+    var options = {
+      query: 'cats',
+      max: 5,
+      key: YOUTUBE_API_KEY,
+    };
+    searchYouTube(options, () => { console.log('hello'); });
   }
 
   onClickVideo(data) {
