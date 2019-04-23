@@ -23,17 +23,23 @@ import VideoPlayer from '../../src/components/VideoPlayer.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    //keep track of all videos and current video in player
+
     this.state = {
-      allVideos: {},
-      currentVideo: null
+      clickedVideo: {
+        video: video[0]
+      }
     };
 
     this.onClickVideo = this.onClickVideo.bind(this);
   }
-  //when title of videoListEntry is clicked play that video in videoplayer
-  onClickVideo() {
-    // this.setState changes currentVideo key to clicked video from videoListEntry
+
+  onClickVideo(data) {
+    this.setState({
+      clicked: !this.state.clicked,
+      clickedVideo: {
+        video: data
+      }
+    });
   }
 
   render() {
@@ -46,10 +52,10 @@ class App extends React.Component {
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <VideoPlayer video={video} />
+            <VideoPlayer video={this.state.clickedVideo.video} />
           </div>
           <div className="col-md-5">
-            <VideoList videos={video} />
+            <VideoList clickEvent={this.onClickVideo} videos={video} />
           </div>
         </div>
       </div>
