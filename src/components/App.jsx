@@ -1,4 +1,4 @@
-import video from '../data/exampleVideoData.js';
+// import video from '../data/exampleVideoData.js';
 import VideoList from '../../src/components/VideoList.js';
 import VideoPlayer from '../../src/components/VideoPlayer.js';
 import YOUTUBE_API_KEY from '../config/youtube.js';
@@ -17,6 +17,7 @@ class App extends React.Component {
     };
 
     this.onClickVideo = this.onClickVideo.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
   componentDidMount() {
     this.getData();
@@ -29,7 +30,7 @@ class App extends React.Component {
       key: YOUTUBE_API_KEY,
     };
     searchYouTube(options, (data) => {
-      console.log(data.items);
+      console.log('App: ', data.items);
 
       this.setState({
         clickedVideo: {
@@ -37,7 +38,28 @@ class App extends React.Component {
         },
         allVideos: data.items
       });
-      console.log(this.state.allVideos);
+    });
+
+  }
+
+  handleSearch(data) {
+    console.log(data);
+    var input = $('.form-control').val();
+
+    var options = {
+      query: input,
+      max: 5,
+      key: YOUTUBE_API_KEY,
+    };
+
+    searchYouTube(options, (data) => {
+      console.log('Search: ', data.items);
+      this.setState({
+        clickedVideo: {
+          video: data.items[0]
+        },
+        allVideos: data.items
+      });
     });
 
   }
@@ -58,7 +80,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search searchList={this.state} />
+            <Search searchEvent={this.handleSearch} />
           </div>
         </nav>
         <div className="row">
