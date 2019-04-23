@@ -1,8 +1,7 @@
-// import video from '../data/exampleVideoData.js';
+import exampleVideo from '../data/exampleVideoData.js';
 import VideoList from '../../src/components/VideoList.js';
 import VideoPlayer from '../../src/components/VideoPlayer.js';
 import YOUTUBE_API_KEY from '../config/youtube.js';
-import searchYouTube from '../lib/searchYouTube.js';
 import Search from '../../src/components/Search.js';
 
 class App extends React.Component {
@@ -11,9 +10,9 @@ class App extends React.Component {
 
     this.state = {
       clickedVideo: {
-        video: {}
+        video: exampleVideo[0]
       },
-      allVideos: []
+      allVideos: exampleVideo
     };
 
     this.onClickVideo = this.onClickVideo.bind(this);
@@ -29,36 +28,37 @@ class App extends React.Component {
       max: 5,
       key: YOUTUBE_API_KEY,
     };
-    searchYouTube(options, (data) => {
-      console.log('App: ', data.items);
+    this.props.searchYouTube(options, (data) => {
+      console.log('App: ', data);
 
       this.setState({
         clickedVideo: {
-          video: data.items[0]
+          video: data[0]
         },
-        allVideos: data.items
+        allVideos: data
       });
     });
 
   }
 
   handleSearch(data) {
+    console.log(this.props.searchYouTube);
     console.log(data);
     var input = $('.form-control').val();
-
+    console.log(input);
     var options = {
       query: input,
       max: 5,
       key: YOUTUBE_API_KEY,
     };
 
-    searchYouTube(options, (data) => {
-      console.log('Search: ', data.items);
+    this.props.searchYouTube(options, (data) => {
+      console.log('Search: ', data);
       this.setState({
         clickedVideo: {
-          video: data.items[0]
+          video: data[0]
         },
-        allVideos: data.items
+        allVideos: data
       });
     });
 
@@ -73,9 +73,6 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.allVideos.length === 0) {
-      return (<div>Loading... </div>);
-    }
     return (
       <div>
         <nav className="navbar">

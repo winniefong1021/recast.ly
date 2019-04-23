@@ -4,7 +4,7 @@ var searchYouTube = (options, callback) => {
     type: 'GET',
     data: {},
     contentType: 'application/json',
-    success: callback,
+    success: (data) => callback(data.items),
     error: function (error) {
       console.error('Youtube: Failed to fetch video', error);
     }
