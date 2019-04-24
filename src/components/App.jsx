@@ -17,7 +17,6 @@ class App extends React.Component {
 
     this.onClickVideo = this.onClickVideo.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    // this.handleInput = this.handleInput.bind(this);
     this.handleInput = _.debounce(this.handleInput.bind(this), 5000);
   }
   componentDidMount() {
@@ -43,7 +42,6 @@ class App extends React.Component {
   }
 
   handleSearch() {
-
     var input = $('.form-control').val();
 
     var options = {
@@ -53,7 +51,6 @@ class App extends React.Component {
     };
 
     this.props.searchYouTube(options, (data) => {
-
       this.setState({
         clickedVideo: {
           video: data[0]
@@ -61,22 +58,16 @@ class App extends React.Component {
         allVideos: data
       });
     });
-
   }
 
   handleInput(event) {
-
-    var input = event;
-    console.log(input);
-
     var options = {
-      query: input,
+      query: event,
       max: 5,
       key: YOUTUBE_API_KEY,
     };
 
     this.props.searchYouTube(options, (data) => {
-
       this.setState({
         clickedVideo: {
           video: data[0]
@@ -86,8 +77,6 @@ class App extends React.Component {
     });
 
   }
-
-
 
   onClickVideo(data) {
     this.setState({
