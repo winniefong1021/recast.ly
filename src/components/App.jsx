@@ -17,7 +17,8 @@ class App extends React.Component {
 
     this.onClickVideo = this.onClickVideo.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleInput = this.handleInput.bind(this);
+    // this.handleInput = this.handleInput.bind(this);
+    this.handleInput = _.debounce(this.handleInput.bind(this), 5000);
   }
   componentDidMount() {
     this.getData();
@@ -66,6 +67,7 @@ class App extends React.Component {
   handleInput(event) {
 
     var input = event;
+    console.log(input);
 
     var options = {
       query: input,
